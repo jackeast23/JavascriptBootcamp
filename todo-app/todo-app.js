@@ -1,29 +1,15 @@
-const todos = [{
-    text: 'Make resume',
-    completed: true,
-}, {
-     text: 'Get linkedin pic',
-     completed: true
-}, {
-    text: 'Create linkedin profile',
-    completed: true
-}, {
-    text: 'Create perosnal website',
-    completed: false
-}, {
-    text: 'Apply to jobs',
-    completed: false
-}]
-
-
-// 1. Setup a new div
-// 2. Setup filters (searchText) and wire up a new filter input to change it
-// 3. Create a renderTodos function to render and rerender the latest filtered data
+let todos = []
 
 // Starts
 const filters = {
     searchText: '',
     hideCompleted: false
+}
+
+const todosJSON = localStorage.getItem('todos')
+
+if (todosJSON !== null) {
+    todos = JSON.parse(todosJSON)
 }
 
 const renderTodos = function (todos, filters) {
@@ -68,12 +54,14 @@ document.querySelector('#search-text').addEventListener('input', function (e) {
     renderTodos(todos, filters)
 })
 
-document.querySelector('#todo-form').addEventListener('submit', function (e) {
+document.querySelector('#new-todo').addEventListener('submit', function (e) {
     e.preventDefault()
     todos.push({
         text: e.target.elements.text.value,
         completed: false
     })
+
+    localStorage.setItem('todos', JSON.stringify(todos))
     renderTodos(todos, filters)
     e.target.elements.text.value = ''
 })
