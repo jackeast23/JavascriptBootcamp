@@ -12,7 +12,7 @@ const todos = [{
     text: 'Create linkedin profile',
     completed: true
 }, {
-    text: 'Create perosnal website',
+    text: 'Create personal website',
     completed: false
 }, {
     text: 'Apply to jobs',
