@@ -2,7 +2,11 @@
 // 15/20 -. You got a C (75%)!
 // A 90-100, B 80-89, C 70-79, D 60-69, F 0-59
 
-const getStudentGrade = function (name = 'Unknown', mark = 0, total = 0) {
+const getStudentGrade = function (name = 'Unknown', mark, total) {
+    if (typeof name !== 'string' || typeof mark !== 'number' || typeof total !== 'number') {
+        throw Error('Please provide numbers only')
+    }
+
     const grade = (mark/total) * 100
     let letterGrade = ''
 
@@ -19,12 +23,19 @@ const getStudentGrade = function (name = 'Unknown', mark = 0, total = 0) {
     } else {
         letterGrade = 'unknown'
     }
+    
     if (letterGrade == 'A' || letterGrade == 'F') {
         return `${name} got an ${letterGrade} (${grade})!`
-    } else {
+    } else if (letterGrade == 'B' || letterGrade == 'C' || letterGrade == 'D') {
         return `${name} got a ${letterGrade} (${grade})!`
+    } else {
+        return 'Grade unknown'
     }
 }
 
-const studentsGrade = getStudentGrade('Jack', 23, 25)
-console.log(studentsGrade)
+try {
+    const studentsGrade = getStudentGrade('Jack', true, 25)
+    console.log(studentsGrade)
+} catch (e) {
+    console.log(e.message)
+}
