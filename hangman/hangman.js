@@ -2,6 +2,7 @@ const Hangman = function (word, numGuesses) {
     this.word = word.toLowerCase().split('')
     this.numGuesses = numGuesses
     this.guessedLetters = []
+    this.status = 'Playing'
 }
 
 Hangman.prototype.getPuzzle = function () {
@@ -21,26 +22,27 @@ Hangman.prototype.getPuzzle = function () {
 Hangman.prototype.makeGuess = function (guess) {
     guess = guess.toLowerCase()
     const isUnique = !this.guessedLetters.includes(guess)
-    const isBad = !this.word.includes(guess)
+    const isBadGuess = !this.word.includes(guess)
 
     if (isUnique) {
         this.guessedLetters.push(guess)
     }
 
-    if (isUnique && isBad) {
+    if (isUnique && isBadGuess) {
         this.numGuesses--
     }
 
+    this.currentStatus()
 }
 
-const game1 = new Hangman('Arrow', 6)
-console.log(game1.getPuzzle())
-console.log(`You have ${game1.numGuesses} remaining guesses`)
+Hangman.prototype.currentStatus = function () {
+    const finished = this.word.every((letter) => this.guessedLetters.includes(letter))
 
-window.addEventListener('keypress', function (e) {
-    // const guess = String.fromCharCode(e.key)
-    const guess = e.key
-    game1.makeGuess(guess)
-    console.log(game1.getPuzzle())
-    console.log(`You have ${game1.numGuesses} remaining guesses`)
-})
+    if (this.numGuesses === 0) {
+        this.status = 'Failed'
+    } else if (finished) {
+        this.status = 'Finished'
+    } else {
+        this.status = 'Playing'
+    }
+}
